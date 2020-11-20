@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Redirect, useParams } from 'react-router-dom'
 import { getHeroesById } from '../../selectors/getHeroesById';
 
@@ -8,7 +8,11 @@ export const HeroScreen = ( { history }) => {
 	// console.log(params);
 	const { heroId } = useParams();
 
-	const hero = getHeroesById(heroId);
+
+	// Memorizamos el resultado siempre y cuando las dependencias se mantenga igual.
+	const hero = useMemo( () => getHeroesById( heroId ), [ heroId ]);
+	// const hero = getHeroesById(heroId);
+
 	console.log(hero);
 
 	if (!hero) {
