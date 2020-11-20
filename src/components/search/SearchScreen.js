@@ -1,21 +1,32 @@
-import React from 'react'
-import { heroes } from '../../data/heroes'
+import React, { useMemo } from 'react'
+import queryString from 'query-string';
+import { useLocation } from 'react-router-dom';
 import { useForm } from '../../hooks/useForm';
 import { HeroCard } from '../heroes/HeroCard';
+import { getHeroesByName as getHeroesByName } from '../../selectors/getHeroesByName';
 
-export const SearchScreen = () => {
-    const heroesFiltered = heroes;
+export const SearchScreen = ({ history }) => {
+
+    const location = useLocation();
+    // console.log(location.search);
+
+    // https://www.npmjs.com/package/query-string
+    // console.log(queryString.parse(location.search));
+    // Se indica por defecto '' vacio para que no muestre undefine en el caso que no tenga valor.
+    const { q = '' } = queryString.parse(location.search);
+    console.log(q);
 
     const [formValues, handleInputChange] = useForm({
-        searchText: ''
+        searchText: q
     });
-
     const { searchText } = formValues;
 
     const handleSearch = (e) => {
         e.preventDefault();
-        console.log(searchText);
+        history.push(`?q=${ searchText }`);
     }
+
+    const heroesFiltered = useMemo(() => getHeroesByName(q), [ q ]);
 
     return (
         <div>
@@ -49,9 +60,28 @@ export const SearchScreen = () => {
 
                 </div>
 
+
                 <div className="col-7">
                     <h4>Results</h4>
                     <hr/>
+
+                    {
+
+                        (q === '')
+                            &&
+                            <div className="alert alert-info">
+                                Search a hero
+                            </div>
+                    }
+
+                    {
+
+                        (q !== '' && heroesFiltered.length === 0)
+                            &&
+                            <div className="alert alert-danger">
+                                There is not a hero with {q}
+                            </div>
+                    }
 
                     {
                         heroesFiltered.map(hero => (
