@@ -12,6 +12,10 @@ describe('Test on <PrivateRouter />', () => {
         }
     }
 
+    // Para comprobar que el local store ha sido llamado con cietos argumentos.
+    // Se simula con jest el LocalStorage
+    Storage.prototype.setItem = jest.fn();
+
     test('should shown the component if its authenticate and save localStore', () => {
 
         const wrapper = mount(
@@ -27,7 +31,12 @@ describe('Test on <PrivateRouter />', () => {
 
         console.log(wrapper.html());
         expect(wrapper.find('span').exists()).toBe(true);
+
+        //Evaluamos el local storage
+        expect( localStorage.setItem ).toHaveBeenCalledWith('lastPath', "/marvel");
     })
+
+
 })
 
 
