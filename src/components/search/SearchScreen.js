@@ -3,7 +3,7 @@ import queryString from 'query-string';
 import { useLocation } from 'react-router-dom';
 import { useForm } from '../../hooks/useForm';
 import { HeroCard } from '../heroes/HeroCard';
-import { getHeroesByName as getHeroesByName } from '../../selectors/getHeroesByName';
+import { getHeroesByName } from '../../selectors/getHeroesByName';
 
 export const SearchScreen = ({ history }) => {
 
