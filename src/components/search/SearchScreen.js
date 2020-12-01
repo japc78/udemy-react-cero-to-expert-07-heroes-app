@@ -14,7 +14,7 @@ export const SearchScreen = ({ history }) => {
     // console.log(queryString.parse(location.search));
     // Se indica por defecto '' vacio para que no muestre undefine en el caso que no tenga valor.
     const { q = '' } = queryString.parse(location.search);
-    console.log(q);
+    // console.log(q);
 
     const [formValues, handleInputChange] = useForm({
         searchText: q
